@@ -2,11 +2,12 @@ import { Comparable } from './Comparable';
 import { compareHelper } from './utils';
 
 let id = 0;
+let count = 0;
 
 export abstract class Item implements Comparable<Item> {
 
 	private static get numberOfItems(): number {
-		return id;
+		return count;
 	};
 
 	private id: number;
@@ -67,6 +68,6 @@ export abstract class Item implements Comparable<Item> {
 	}
 
 	public static reset(): void {
-		id = 0;
+		count = 0;
 	}
 }
