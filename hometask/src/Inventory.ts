@@ -19,8 +19,11 @@ export class Inventory {
       this.items.sort(comparator.compare);
       return;
     }
-    const anyItem = this.items[0];
-    this.items.sort((a: Item, b: Item) => anyItem.compareTo.call(a, b)); ///????
+    this.items.sort((a: Item, b: Item) => {
+      if (a.getValue > b.getValue) return 1;
+      if (a.getValue < b.getValue) return -1;
+      return 0;
+    });
   }
 
   public toString(): string {
