@@ -5,9 +5,8 @@ import { Table, Filters, Sort, Search } from './components';
 import { getImages, getUsers, getAccounts } from './mocks/api';
 
 import styles from './App.module.scss';
-
-import type { Row } from './components';
-import type { Image, User, Account } from '../types';
+import { dataConverter, sortByName, filterByPosts } from './helpers';
+import type { Image, User, Account, Row } from '../types';
 
 import rows from './mocks/rows.json';
 
@@ -15,27 +14,43 @@ import rows from './mocks/rows.json';
 const mockedData: Row[] = rows.data;
 
 function App() {
+  const [initialData, setInitialData] = useState<Row[]>(undefined);
+  console.log('initialData: ', initialData);
   const [data, setData] = useState<Row[]>(undefined);
+  console.log('data: ', data);
+
+  const [sortOrder, setSort] = useState<'asc' | 'desc' | null>(null);
+  const [search, setSearch] = useState<string>(null);
+  const [filter, setFilter] = useState<string[]>([]);
 
   useEffect(() => {
     // fetching data from API
     Promise.all([getImages(), getUsers(), getAccounts()]).then(
       ([images, users, accounts]: [Image[], User[], Account[]]) =>
-        console.log(images, users, accounts)
+      setInitialData(dataConverter(users, accounts,images))
     );
   }, [])
+
+  useEffect(() => {
+    if (initialData) {
+      const dataArray = [...initialData]
+      const filteredData = filterByPosts(filter, dataArray)
+      filteredData.sort(sortByName(sortOrder))
+      setData(filteredData)
+    }
+  }, [initialData, sortOrder, search, filter])
 
   return (
     <StyledEngineProvider injectFirst>
       <div className="App">
         <div className={styles.container}>
           <div className={styles.sortFilterContainer}>
-            <Filters />
-            <Sort />
+            <Filters selected={filter} updateSelected={setFilter}/>
+            <Sort selected={sortOrder} updateSelected={setSort} />
           </div>
-          <Search />
+          <Search selected={search} updateSelected={setSearch}/>
         </div>
-        <Table rows={data || mockedData} />
+        <Table rows={data || initialData || mockedData} />
       </div>
     </StyledEngineProvider>
   );
