@@ -5,7 +5,7 @@ import { Table, Filters, Sort, Search } from './components';
 import { getImages, getUsers, getAccounts } from './mocks/api';
 
 import styles from './App.module.scss';
-import { dataConverter, sortByName, filterByPosts } from './helpers';
+import { dataConverter, sortByName, filterByPosts, searchByNameUserCountry } from './helpers';
 import type { Image, User, Account, Row } from '../types';
 
 import rows from './mocks/rows.json';
@@ -20,7 +20,7 @@ function App() {
   console.log('data: ', data);
 
   const [sortOrder, setSort] = useState<'asc' | 'desc' | null>(null);
-  const [search, setSearch] = useState<string>(null);
+  const [search, setSearch] = useState<string>('');
   const [filter, setFilter] = useState<string[]>([]);
 
   useEffect(() => {
@@ -34,7 +34,8 @@ function App() {
   useEffect(() => {
     if (initialData) {
       const dataArray = [...initialData]
-      const filteredData = filterByPosts(filter, dataArray)
+      const searchedData = searchByNameUserCountry(search, dataArray)
+      const filteredData = filterByPosts(filter, searchedData)
       filteredData.sort(sortByName(sortOrder))
       setData(filteredData)
     }

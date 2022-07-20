@@ -1,6 +1,7 @@
 import type { Image, User, Account, Row } from '../types';
 
-export const findByProperty = (property: string) => (array: Record<any, any>[], equalsTo: any) => {
+// data converter
+const findByProperty = (property: string) => (array: Record<any, any>[], equalsTo: any) => {
   const foundItem = array.find((item) => item[property] === equalsTo)
   return foundItem;
 }
@@ -26,6 +27,7 @@ export const dataConverter = (
   return rows;
 };
 
+// sort
 const sortByProperty = (property: string) => (order: 'asc' | 'desc' | null) => {
   switch (order) {
     case 'asc':
@@ -49,6 +51,7 @@ const sortByProperty = (property: string) => (order: 'asc' | 'desc' | null) => {
 
 export const sortByName = sortByProperty('name');
 
+// filter
 const filterConverterForPosts = (filter: string): Function => {
   switch (filter) {
     case 'Without posts':
@@ -66,7 +69,7 @@ const filterConverterForPosts = (filter: string): Function => {
 const filterByProperty = (filterConverter: (filter: string) => Function ) => (filterArray: string[], array: Row[]): Row[] => {
   if (filterArray.length === 0) return array
 
-  const combinedFilterFunc = (item) => {
+  const combinedFilterFunc = (item: Row) => {
     const filterResult = filterArray.map(filterConverter).map((func) => func(item))
     return filterResult.some((item) => item)
   }
@@ -77,3 +80,22 @@ const filterByProperty = (filterConverter: (filter: string) => Function ) => (fi
 };
 
 export const filterByPosts = filterByProperty(filterConverterForPosts);
+
+// search by country / name / username
+
+const search = (properties: string[]) => (string: string, array: Row[]): Row[] => {
+
+  if (string.length === 0) return array
+
+  const substring = string.toLowerCase()
+
+  const searchedArray = array.filter((item: Row) => {
+    const arrayOfValues = properties.map(property => item[property].toLowerCase());
+    const searchRes = arrayOfValues.map((value: string) => value.includes(substring))
+    return searchRes.some((item) => item)
+  });
+  
+  return searchedArray
+}
+
+export const searchByNameUserCountry = search(['name', 'username', 'country'])
