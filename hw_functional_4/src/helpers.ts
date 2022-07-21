@@ -51,6 +51,7 @@ const sortByProperty = (property: string) => (order: 'asc' | 'desc' | null) => {
 
 export const sortByName = sortByProperty('name');
 
+
 // filter
 const filterConverterForPosts = (filter: string): Function => {
   switch (filter) {
@@ -66,36 +67,42 @@ const filterConverterForPosts = (filter: string): Function => {
 };
 
 
-const filterByProperty = (filterConverter: (filter: string) => Function ) => (filterArray: string[], array: Row[]): Row[] => {
-  if (filterArray.length === 0) return array
+const filterItemByProperty = (filterConverter: (filter: string) => Function ) => (filterArray: string[]) => (item: Row): boolean => {
+  if (filterArray.length === 0) return true
 
-  const combinedFilterFunc = (item: Row) => {
-    const filterResult = filterArray.map(filterConverter).map((func) => func(item))
-    return filterResult.some((item) => item)
-  }
-
-  const result = array.filter(combinedFilterFunc)
-    
-  return result
+  const filterResult = filterArray.map(filterConverter).map((func) => func(item))
+  return filterResult.some((res) => res)
 };
 
-export const filterByPosts = filterByProperty(filterConverterForPosts);
+export const filterItemByPosts = filterItemByProperty(filterConverterForPosts);
+
 
 // search by country / name / username
 
-const search = (properties: string[]) => (string: string, array: Row[]): Row[] => {
+const searchItem = (properties: string[]) => (string: string) => (item: Row): boolean => {
 
-  if (string.length === 0) return array
+  if (string.length === 0) return true
 
   const substring = string.toLowerCase()
 
-  const searchedArray = array.filter((item: Row) => {
-    const arrayOfValues = properties.map(property => item[property].toLowerCase());
-    const searchRes = arrayOfValues.map((value: string) => value.includes(substring))
-    return searchRes.some((item) => item)
-  });
-  
-  return searchedArray
+  const arrayOfValues = properties.map(property => item[property].toLowerCase());
+  const searchRes = arrayOfValues.map((value: string) => value.includes(substring))
+  return searchRes.some((res) => res)
 }
 
-export const searchByNameUserCountry = search(['name', 'username', 'country'])
+export const searchItemByNameUserCountry = searchItem(['name', 'username', 'country'])
+
+
+// compose results of search and filters
+
+export const composeFuncs = (array: Row[], funcArray: Function[]) => {
+  if (funcArray.length === 0) return array
+
+  const newArray = array.filter((item) => {
+    const funcRes = funcArray.map((func) => func(item))
+
+    return funcRes.some((res) => res)
+  })
+
+  return newArray
+}
