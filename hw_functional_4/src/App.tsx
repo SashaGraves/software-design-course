@@ -5,7 +5,7 @@ import { Table, Filters, Sort, Search } from './components';
 import { getImages, getUsers, getAccounts } from './mocks/api';
 
 import styles from './App.module.scss';
-import { dataConverter, sortByName, filterItemByPosts, searchItemByNameUserCountry, composeFuncs } from './helpers';
+import { dataConverter, sortByName, filterItemByPosts, searchItemByNameUserCountry, composeFuncs, composeValuesToFilters } from './helpers';
 import type { Image, User, Account, Row } from '../types';
 
 import rows from './mocks/rows.json';
@@ -45,14 +45,8 @@ function App() {
     if (initialData) {
       const dataArray = [...initialData]
 
-      // if arg is empty => filter/search is not used => we do not use it in calculation 
-      const funcArgNewMap = [...funcArgMap].filter(obj => {
-        if (!obj.arg || obj.arg.length === 0) return false
-        return true
-      })
-
-      // create filter funtions for those filters that have args
-      const funcMap = funcArgNewMap.map((obj) => obj.func(obj.arg as any))
+      // check if all filters and searches has values. if not, do not apply them to filtering
+      const funcMap = composeValuesToFilters(funcArgMap)
 
       // apply and compose all filters and searches
       const resultArray = composeFuncs(dataArray, funcMap)

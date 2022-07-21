@@ -106,3 +106,19 @@ export const composeFuncs = (array: Row[], funcArray: Function[]) => {
 
   return newArray
 }
+
+
+// compose filter values and funcs
+
+export const composeValuesToFilters = (funcArgMap: {func: Function; arg: any}[]) => {
+  
+  // if arg is empty => filter/search is not used => we do not use it in calculation 
+  const funcArgNewMap = [...funcArgMap].filter(obj => {
+    if (!obj.arg || obj.arg.length === 0) return false
+    return true
+  })
+
+  // create filter funtions for those filters that have args
+  const funcMap = funcArgNewMap.map((obj) => obj.func(obj.arg as any))
+  return funcMap
+}
