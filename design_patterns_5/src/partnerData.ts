@@ -1,10 +1,3 @@
-export type PartnerInfoMap = {
-  company: string;
-  description: string;
-  zipStart: number[];
-  costRate: number;
-};
-
 export const AirEast = {
   company: 'Air East',
   description: 'Based in Atlanta',

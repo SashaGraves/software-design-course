@@ -1,8 +1,7 @@
-import { IParcel, IShipment } from './types';
-import { ShipmentChooser, Shipper } from './Shipper';
+import { IParcel, IShipment, IShipmentChooser } from './types';
+import { Shipper } from './Shipper';
 import { WeightTypeRule, WEIGHT_TYPE } from './partnerData';
-
-const costRate = 39;
+import { ShipmentChooser } from './ShipperChooser';
 
 export default class Shipment implements IShipment {
   private parcel: IParcel;
@@ -17,8 +16,7 @@ export default class Shipment implements IShipment {
   }
 
   findShipper() {
-    // ShipmentChooser factory is used here
-    const shipmentChooser = new ShipmentChooser( this.parcel.FromZipCode );
+    const shipmentChooser: IShipmentChooser = new ShipmentChooser( this._FromZipcode, this._Type );
     this.shipper = shipmentChooser.chooseShipper();
   }
 
@@ -27,12 +25,12 @@ export default class Shipment implements IShipment {
   }
 
   public ship(): string {
-    const cost = this._getCost( this._Weight );
+    const cost = this._getCost();
     return `Id: ${ this._Id }, from ${ this._WhereFrom }, to ${ this._WhereTo }, price ${ cost } cents`;
   }
 
-  private _getCost( weight: number ): number {
-    const cost = this.shipper.getCost() * weight;
+  private _getCost(): number {
+    const cost = this.shipper.getCost( this._Weight, this._Type );
     return cost;
   }
 
@@ -49,12 +47,20 @@ export default class Shipment implements IShipment {
     return this.parcel.FromAddress;
   }
 
+  private get _FromZipcode() {
+    return this.parcel.FromZipCode;
+  }
+
   private get _WhereTo() {
     return this.parcel.ToAddress;
   }
 
   private get _Weight() {
     return this.parcel.Weight;
+  }
+
+  private get _Type() {
+    return this.parcel.type;
   }
 
 }

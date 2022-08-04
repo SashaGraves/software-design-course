@@ -16,3 +16,19 @@ export interface IShipment {
   getShipmentId: () => void;
   ship: () => string;
 }
+
+export interface IShipmentChooser {
+  chooseShipper(): IShipper;
+}
+
+export interface IShipper {
+  zipStart: number[];
+  getCost: ( weight: number, type: string ) => number;
+}
+
+export type PartnerInfoMap = {
+  company: string;
+  description: string;
+  zipStart: number[];
+  costRate: number;
+};
