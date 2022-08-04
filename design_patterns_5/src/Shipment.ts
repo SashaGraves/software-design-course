@@ -1,23 +1,26 @@
-import { IParcel, IShipment, IShipmentChooser } from './types';
+import { IParcel, IShipment, IShipmentChooser, IShipper } from './types';
 import { Shipper } from './Shipper';
 import { WeightTypeRule, WEIGHT_TYPE } from './partnerData';
 import { ShipmentChooser } from './ShipperChooser';
 
 export default class Shipment implements IShipment {
-  private parcel: IParcel;
-  shipper: Shipper;
+  private parcel: IParcel & {
+    type: string;
+  };
+  protected shipper: IShipper;
 
   constructor( parcel: IParcel ) {
-    this.parcel = parcel;
+    const type = this._getTypeByWeight( parcel.Weight );
+    this.parcel = { ...parcel, type };
     if ( this.parcel.ShipmentID === 0 ) {
       this.parcel.ShipmentID = this.getShipmentId();
     }
-    this.parcel.type = this._getTypeByWeight( this._Weight );
+    this.shipper = this.findShipper();
   }
 
   findShipper() {
     const shipmentChooser: IShipmentChooser = new ShipmentChooser( this._FromZipcode, this._Type );
-    this.shipper = shipmentChooser.chooseShipper();
+    return shipmentChooser.chooseShipper();
   }
 
   public getShipmentId(): number {
@@ -26,7 +29,7 @@ export default class Shipment implements IShipment {
 
   public ship(): string {
     const cost = this._getCost();
-    return `Id: ${ this._Id }, from ${ this._WhereFrom }, to ${ this._WhereTo }, price ${ cost } cents`;
+    return `Id: ${ this._Id }, from ${ this._WhereFrom }, to ${ this._WhereTo }, price ${ cost } dollars`;
   }
 
   private _getCost(): number {

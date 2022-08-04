@@ -24,13 +24,13 @@ export abstract class Shipper implements IShipper {
     }
   }
 
-  protected shipRule_Letter( weight: number ) {
+  protected shipRule_Letter( weight: number ): number {
     return this.costRate_LETTER * weight;
   };
 
-  protected shipRule_Package( weight: number ) {
+  protected shipRule_Package( weight: number ): number {
     return this.costRate_PACKAGE * weight;
   };
 
-  abstract shipRule_Oversized( weight: number );
+  abstract shipRule_Oversized( weight: number ): number;
 };

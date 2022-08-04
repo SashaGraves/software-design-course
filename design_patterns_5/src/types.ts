@@ -9,7 +9,6 @@ export interface IParcel {
   FromZipCode: string;
   ToAddress: string;
   ToZipCode: string;
-  type: string;
 };
 
 export interface IShipment {

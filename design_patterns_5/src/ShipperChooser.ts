@@ -9,23 +9,16 @@ export class ShipmentChooser {
   constructor( zipCode: string, type: string ) {
     this.zipCode = zipCode;
     this.type = type;
-    // this.shippers = [ AirEast, ChicagoSprint, PacificParcel ].map( config => new Shipper( config ) );
+    this.shippers = this.createShippers();
+  }
+
+  private createShippers() {
+    return [ new AirEastShipper(), new ChicagoSprintShipper(), new PacificParcelShipper() ];
   }
 
   public chooseShipper(): IShipper {
-    const shipperByZip = this.chooseShipperByZipcode();
-    const approvedShipper = this.approveShipmentForType( shipperByZip, this.type );
-    return approvedShipper ? shipperByZip : new Shipper( AirEast );
-  }
-
-
-  private chooseShipperByZipcode(): IShipper {
     const firstNumber = parseInt( this.zipCode.slice( 0, 1 ) );
     const foundShipper = this.shippers.find( ( shipper ) => shipper.zipStart.includes( firstNumber ) );
-    return foundShipper || new Shipper( AirEast );
-  }
-
-  private approveShipmentForType( shipperByZip: IShipper, type: string ): boolean {
-
+    return foundShipper || new AirEastShipper();
   }
 }
