@@ -2,10 +2,14 @@ import { AirEast, ChicagoSprint, PacificParcel, PartnerInfoMap } from './partner
 
 
 export class Shipper {
-  config: PartnerInfoMap;
+  protected config: PartnerInfoMap;
 
   constructor( config: PartnerInfoMap ) {
     this.config = config;
+  }
+
+  public get zipStart() {
+    return this.config.zipStart;
   }
 
   public getCost() {
@@ -24,7 +28,7 @@ export class ShipmentChooser {
 
   chooseShipper(): Shipper {
     const firstNumber = parseInt( this.zipCode.slice( 0, 1 ) );
-    const foundShipper = this.shippers.find( ( shipper ) => shipper.config.zipStart.includes( firstNumber ) );
+    const foundShipper = this.shippers.find( ( shipper ) => shipper.zipStart.includes( firstNumber ) );
     return foundShipper || new Shipper( AirEast );
   }
 }
