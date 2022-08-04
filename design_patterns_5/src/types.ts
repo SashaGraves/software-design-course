@@ -12,7 +12,6 @@ export type IParcel = {
 };
 
 export interface IShipment {
-  // getInstance: () => void;
   getShipmentId: () => void;
   ship: () => string;
 }

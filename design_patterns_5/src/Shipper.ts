@@ -1,10 +1,8 @@
 import { AirEast, ChicagoSprint, PacificParcel, PartnerInfoMap } from './partnerData';
-import { IParcel } from './types';
 
 
 export class Shipper {
   config: PartnerInfoMap;
-  // getInstance() {  }
 
   constructor( config: PartnerInfoMap ) {
     this.config = config;
@@ -30,3 +28,7 @@ export class ShipmentChooser {
     return foundShipper || new Shipper( AirEast );
   }
 }
+
+// I do not ise Strategy here.
+// There is no need to create different subclasses of Shipper so far, as their logic is same. 
+// ShipmentChooser is Factory, that chooses which Shipper instance is needed and produces it.

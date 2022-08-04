@@ -16,12 +16,10 @@ export default class Shipment implements IShipment {
   }
 
   findShipper(): Shipper {
+    // ShipmentChooser factory is used here
     const shipmentChooser = new ShipmentChooser( this.parcel.FromZipCode );
     return shipmentChooser.chooseShipper();
   }
-
-  // public getInstance(): Shipment {
-  // }
 
   public getShipmentId(): number {
     return Date.now();
