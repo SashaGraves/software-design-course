@@ -23,7 +23,7 @@ export default class Shipment implements IShipment {
     return shipmentChooser.chooseShipper();
   }
 
-  public getShipmentId(): number {
+  protected getShipmentId(): number {
     return Date.now();
   }
 

@@ -12,7 +12,6 @@ export interface IParcel {
 };
 
 export interface IShipment {
-  getShipmentId: () => void;
   ship: () => string;
 }
 
@@ -31,3 +30,7 @@ export type PartnerInfoMap = {
   zipStart: number[];
   costRate: number;
 };
+
+export interface IMarkAssistant {
+  packShipment( shipment: IShipment ): IShipment;
+}
