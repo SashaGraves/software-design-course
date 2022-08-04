@@ -17,3 +17,12 @@ export const parcel0: IParcel = {
   ToAddress: 'Break-bone end, Loubeernaou, Barbe',
   ToZipCode: '99008',
 };
+
+export const parcel2: IParcel = {
+  ShipmentID: 348,
+  Weight: 897,
+  FromAddress: 'Deu street, New Lorole',
+  FromZipCode: '93867',
+  ToAddress: 'Break-bone end, Loubeernaou, Barbe',
+  ToZipCode: '99008',
+};

@@ -1,15 +1,23 @@
 import { IParcel, IShipment } from './types';
+import { ShipmentChooser, Shipper } from './Shipper';
 
 const costRate = 39;
 
 export default class Shipment implements IShipment {
   private parcel: IParcel;
+  shipper: Shipper;
 
   constructor( parcel: IParcel ) {
     this.parcel = parcel;
     if ( this.parcel.ShipmentID === 0 ) {
       this.parcel.ShipmentID = this.getShipmentId();
     }
+    this.shipper = this.findShipper();
+  }
+
+  findShipper(): Shipper {
+    const shipmentChooser = new ShipmentChooser( this.parcel.FromZipCode );
+    return shipmentChooser.chooseShipper();
   }
 
   // public getInstance(): Shipment {
@@ -25,7 +33,7 @@ export default class Shipment implements IShipment {
   }
 
   private _getCost( weight: number ): number {
-    const cost = costRate * weight;
+    const cost = this.shipper.getCost() * weight;
     return cost;
   }
 

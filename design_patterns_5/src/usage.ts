@@ -1,4 +1,4 @@
-import { parcel1, parcel0 } from './mockData';
+import { parcel1, parcel0, parcel2 } from './mockData';
 import Client from './Client';
 import { IParcel } from './types';
 
@@ -6,3 +6,4 @@ import { IParcel } from './types';
 const client = new Client();
 client.shipParcel( parcel1 );
 client.shipParcel( parcel0 );
+client.shipParcel( parcel2 );

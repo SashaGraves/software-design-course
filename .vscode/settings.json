@@ -2,5 +2,6 @@
   "typescript.format.semicolons": "insert",
   "javascript.format.semicolons": "insert",
   "editor.tabSize": 2,
-  "editor.minimap.maxColumn": 100
+  "editor.minimap.maxColumn": 100,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false
 }
