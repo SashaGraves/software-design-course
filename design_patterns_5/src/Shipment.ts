@@ -1,5 +1,6 @@
 import { IParcel, IShipment } from './types';
 import { ShipmentChooser, Shipper } from './Shipper';
+import { WeightTypeRule, WEIGHT_TYPE } from './partnerData';
 
 const costRate = 39;
 
@@ -12,13 +13,13 @@ export default class Shipment implements IShipment {
     if ( this.parcel.ShipmentID === 0 ) {
       this.parcel.ShipmentID = this.getShipmentId();
     }
-    this.shipper = this.findShipper();
+    this.parcel.type = this._getTypeByWeight( this._Weight );
   }
 
-  findShipper(): Shipper {
+  findShipper() {
     // ShipmentChooser factory is used here
     const shipmentChooser = new ShipmentChooser( this.parcel.FromZipCode );
-    return shipmentChooser.chooseShipper();
+    this.shipper = shipmentChooser.chooseShipper();
   }
 
   public getShipmentId(): number {
@@ -33,6 +34,11 @@ export default class Shipment implements IShipment {
   private _getCost( weight: number ): number {
     const cost = this.shipper.getCost() * weight;
     return cost;
+  }
+
+  private _getTypeByWeight( weight: number ): string {
+    const findRule = WeightTypeRule.find( rule => rule.minWeight < weight && rule.maxWeight >= weight );
+    return findRule?.name || WEIGHT_TYPE.OVERSIZED;
   }
 
   private get _Id() {

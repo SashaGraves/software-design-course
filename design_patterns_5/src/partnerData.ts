@@ -23,3 +23,33 @@ export const PacificParcel = {
   zipStart: [ 7, 8, 9 ],
   costRate: 51,
 };
+
+export type Rule = {
+  name: string;
+  minWeight: number;
+  maxWeight: number;
+};
+
+export enum WEIGHT_TYPE {
+  LETTER = 'Letter',
+  PACKAGE = 'Package',
+  OVERSIZED = 'Oversized'
+}
+
+export const WeightTypeRule: Rule[] = [
+  {
+    name: WEIGHT_TYPE.LETTER,
+    minWeight: 0,
+    maxWeight: 15,
+  },
+  {
+    name: WEIGHT_TYPE.PACKAGE,
+    minWeight: 15,
+    maxWeight: 160,
+  },
+  {
+    name: WEIGHT_TYPE.OVERSIZED,
+    minWeight: 160,
+    maxWeight: Infinity,
+  }
+];
