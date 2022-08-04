@@ -5,6 +5,9 @@ import { IShipper, PartnerInfoMap } from './types';
 export abstract class Shipper implements IShipper {
   protected abstract config: PartnerInfoMap;
 
+  protected abstract costRate_LETTER: number;
+  protected abstract costRate_PACKAGE: number;
+
   public get zipStart() {
     return this.config.zipStart;
   }
@@ -21,7 +24,13 @@ export abstract class Shipper implements IShipper {
     }
   }
 
-  abstract shipRule_Letter( weight: number );
-  abstract shipRule_Package( weight: number );
+  protected shipRule_Letter( weight: number ) {
+    return this.costRate_LETTER * weight;
+  };
+
+  protected shipRule_Package( weight: number ) {
+    return this.costRate_PACKAGE * weight;
+  };
+
   abstract shipRule_Oversized( weight: number );
 };
