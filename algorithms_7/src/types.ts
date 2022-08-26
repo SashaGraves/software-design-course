@@ -1,16 +1,18 @@
 export interface WeightedGraph {
   addVertex(key: string): void;
   addEdge(from: IVertex, to: IVertex, weight: number): void;
+  Adjacency_List: AdjacencyList;
+  Weight_List: WeightList;
 }
 
-export interface Path {
+export interface IPath {
   path: string[];
   distance: number;
 }
 
-export interface Dijkstra<T> {
-  findShortestPath(vertex1: T, vertex2: T): Path;
-  findAllShortestPaths(vertex: T): Record<string, Path>;
+export interface IDijkstra {
+  findShortestPath(vertex1: IVertex, vertex2: IVertex): IPath;
+  findAllShortestPaths(vertex: IVertex): Record<string, IPath>; // требуется найти кратчайшие расстояния от 1-й вершины до всех остальных.
 }
 
 export type AdjacencyList = {
@@ -29,4 +31,9 @@ export interface IEdge {
   Weight: number;
   To: IVertex;
   From: IVertex;
+}
+
+export interface IVertexDij {
+  Mark: number;
+  Vertex: IVertex;
 }

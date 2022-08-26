@@ -13,17 +13,25 @@ export class Graph implements WeightedGraph {
   addEdge(from: IVertex, to: IVertex, weight: number): void {
     // проверяет есть ли вершины в списке
     const areVertecesExist = this.vertecesList.includes(from.Key) && this.vertecesList.includes(to.Key);
-    if (areVertecesExist) return;
+    if (!areVertecesExist) return;
 
     // добавляет список смежности
     this.adjacencyList[from.Key].push(to.Key);
 
     // и добавляяет весы для каждой грани
-    const weightKey = from.Key + to.Key;
+    const weightKey = from.Key + '-' + to.Key;
     this.weightList[weightKey] = weight;
   };
 
   private get vertecesList(): string[] {
     return Object.keys(this.adjacencyList);
+  }
+
+  get Adjacency_List() {
+    return this.adjacencyList;
+  }
+
+  get Weight_List() {
+    return this.weightList;
   }
 }
