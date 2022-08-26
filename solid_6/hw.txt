@@ -1,0 +1,52 @@
+Single Responsibility Principle 
+
+Pattern: 
+https://github.com/melonjs/melonJS/blob/master/src/text/glyph.js 
+Glyph класс отвечает одной задаче - содержать данные об одном текстовом знаке
+
+Violation: 
+https://github.com/pixijs/pixijs/blob/dev/packages/text/src/TextMetrics.ts
+Этот класс отвечает нескольким задачам - считает метрики текста и стиля текста, а также кеширует и логирует их
+
+Violation: 
+Суперкласс Engine: https://github.com/BabylonJS/Babylon.js/blob/master/packages/dev/core/src/Engines/engine.ts содержит ВСЕ МЕТОДЫ НА СВЕТЕ, от обработки текстур до выхода из полногоэкранного режима. Это God object
+
+
+Open / Closed Principle 
+
+Pattern:
+класс Rect - https://github.com/melonjs/melonJS/blob/master/src/geometries/rectangle.js - 210-214 - класс содержит метод scale()
+класс Renderable extends Rect.  - https://github.com/melonjs/melonJS/blob/master/src/renderable/renderable.js - 583 - 587 - в этом классе метод scale() расширен
+
+
+Anti-pattern: 
+Здесь слишком много уровней наследования для класса Button. 
+
+https://github.com/BabylonJS/Babylon.js/blob/master/packages/dev/gui/src/2D/controls/button.ts
+
+export class Button extends Rectangle {
+class Rectangle extends Container
+export class Container extends Control
+
+
+Liskov Substitution Principle 
+
+Violation:
+Action https://github.com/BabylonJS/Babylon.js/blob/fdbf393d1d7699dc7cc69cec1dca0819ebd2622a/packages/dev/core/src/Actions/action.ts
+ExecuteCodeAction  https://github.com/BabylonJS/Babylon.js/blob/fdbf393d1d7699dc7cc69cec1dca0819ebd2622a/packages/dev/core/src/Actions/directActions.ts#L489
+
+execute method has stricter precondition in child
+
+
+Interface Seggregation Principle
+
+Violation:
+https://github.com/melonjs/melonJS/blob/master/src/renderable/renderable.js  // 737 - 747 // 795 - 797
+draw() метод пустой. Скорее всего, с интерфейсом, частью которого является этот метод, что-то не то.
+
+
+Dependency Inversion Principle 
+Pattern: 
+
+https://github.com/BabylonJS/Babylon.js/blob/fdbf393d1d7699dc7cc69cec1dca0819ebd2622a/packages/dev/core/src/Cameras/RigModes/vrRigMode.ts
+Экземпляр Camera получает свои свойства в отдельной функции. Это похоже на абстрагирование 
