@@ -1,22 +1,22 @@
-import { IEdge, IVertex } from "./types";
+import {IEdge, IVertex} from "./types";
 
 export class Edge implements IEdge {
-  vertex1: IVertex;
-  vertex2: IVertex;
-  weight: number;
+  private from: IVertex;
+  private to: IVertex;
+  private weight: number;
 
-  constructor( vertex1: IVertex, vertex2: IVertex, weight: number ) {
-    this.vertex1 = vertex1;
-    this.vertex2 = vertex2;
+  constructor(vertex1: IVertex, vertex2: IVertex, weight: number) {
+    this.from = vertex1;
+    this.to = vertex2;
     this.weight = weight;
   }
 
-  get To(): string {
-    return this.vertex1.Key;
+  get To(): IVertex {
+    return this.to;
   }
 
-  get From(): string {
-    return this.vertex2.Key;
+  get From(): IVertex {
+    return this.from;
   }
 
   get Weight(): number {

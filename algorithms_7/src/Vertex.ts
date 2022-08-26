@@ -1,13 +1,13 @@
-import { IVertex } from "./types";
+import {IVertex} from "./types";
 
 export class Vertex implements IVertex {
-  key: string;
+  private key: string;
 
-  constructor( key: string ) {
+  constructor(key: string) {
     this.key = key;
   }
 
-  get Key(): string {
+  public get Key(): string {
     return this.key;
   }
 }
