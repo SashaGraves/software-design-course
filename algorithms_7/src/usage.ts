@@ -24,7 +24,7 @@ vertices.forEach(vertex => graph.addVertex(vertex));
 edges.forEach(edge => graph.addEdge(edge.From, edge.To, edge.Weight));
 
 console.log(graph.Adjacency_List);
-console.log(graph.Weight_list);
+console.log(graph.Weight_List);
 
 const dijkstraGraph: IDijkstra = new DijkstraGraph(graph);
 

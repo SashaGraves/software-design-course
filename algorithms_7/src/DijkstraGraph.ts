@@ -6,31 +6,42 @@ import {Vertex} from './Vertex';
 export class DijkstraGraph implements IDijkstra {
 
   private graph: WeightedGraph;
-  private dVerteces: VertexDij[] = [];
+  private dVerteces: IVertexDij[] = [];
   private unvisitedNodes: Set<string> = new Set();
+  private rememberedNeightbors: Set<IVertexDij> = new Set();
 
   constructor(graph: WeightedGraph) {
     this.graph = graph;
   }
 
   findAllShortestPaths(vertex: IVertex): Record<string, IPath> {
-    this.initialize(vertex);
+    if (!this.graph.Verteces.includes(vertex)) throw Error('This vertex not found in graph');
 
-    this.func(vertex);
+    const startNode = this.initialize(vertex);
+
+    console.log('unvisitedNodes before start', this.unvisitedNodes);
+
+    this.doAlgorithm(startNode);
+
+    console.log('unvisitedNodes after', this.unvisitedNodes);
+
   }
 
   findShortestPath(vertex1: IVertex, vertex2: IVertex): IPath {
 
   }
 
-  private initialize(startingVertex: IVertex): void {
+  private initialize(startingVertex: IVertex): IVertexDij {
+    let startingNode: unknown = null;
     this.dVerteces = this.graph.Verteces.map(item => {
       this.unvisitedNodes.add(item.Key);
       if (item.Key === startingVertex.Key) {
-        return new VertexDij(item.Key, true);
+        startingNode = new VertexDij(item.Key, true);
+        return startingNode as IVertexDij;
       }
       return new VertexDij(item.Key);
     });
+    return startingNode as IVertexDij;
   }
 
   private findDVertex(value: string | IVertex): IVertexDij | undefined {
@@ -52,12 +63,7 @@ export class DijkstraGraph implements IDijkstra {
     this.unvisitedNodes.delete(key);
   }
 
-  findNodeMin(nodes: IVertexDij[]) {
-    nodes.sort((a, b) => a.Mark - b.Mark);
-    return nodes[0];
-  }
-
-  private func(startingNode: IVertexDij): IVertexDij {
+  private func(startingNode: IVertexDij): IVertexDij[] | undefined {
     const currentKey: string = startingNode.Key;
 
     // calculate the tentative distance to each of its unvisited neighbor nodes.
@@ -79,8 +85,34 @@ export class DijkstraGraph implements IDijkstra {
     });
     this.visitNode(startingNode);
 
-    // find and return next node to visit
-    return this.findNodeMin(neightborsV);
+    // return neightbors nodes
+
+    if (neightborsV.length === 0) return;
+    neightborsV.sort((a, b) => a.Mark - b.Mark);
+    return neightborsV;
   };
 
+  private doAlgorithm(startingNode: IVertexDij) {
+    const nextNodes = this.func(startingNode);
+    if (nextNodes) {
+      nextNodes.forEach(item => this.rememberedNeightbors.add(item));
+      this.doAlgorithm(nextNodes[0]);
+    } else {
+      const previousNode = this.checkRememberedNeightbors();
+      if (previousNode === 'Done') {
+        return;
+      }
+      this.doAlgorithm(previousNode);
+
+    }
+  }
+
+  checkRememberedNeightbors(): IVertexDij | 'Done' {
+    for (const item of this.rememberedNeightbors.values()) {
+      if (this.unvisitedNodes.has(item.Key)) return item;
+
+      this.rememberedNeightbors.delete(item);
+    }
+    return 'Done';
+  }
 }
