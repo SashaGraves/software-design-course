@@ -14,14 +14,9 @@ export interface IPath {
   distance: number;
 }
 
-// export interface IDijkstra {
-//   findShortestPath(vertex1: IVertex, vertex2: IVertex): IPath;
-//   findAllShortestPaths(vertex: IVertex): Record<string, IPath>; // требуется найти кратчайшие расстояния от 1-й вершины до всех остальных.
-// }
-
 export interface IDijkstra {
   findAllShortestPaths(vertex: IVertex): void; // требуется найти кратчайшие расстояния от 1-й вершины до всех остальных.
-
+  findShortestPath(vertex1: IVertex, vertex2: IVertex): IPath;
 }
 
 export type AdjacencyList = {

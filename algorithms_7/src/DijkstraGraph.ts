@@ -1,4 +1,4 @@
-import {IDijkstra, IVertex, IPath, IVertexDij, WeightedGraph} from './types';
+import {IDijkstra, IVertex, IPath, IVertexDij, WeightedGraph, WeightList} from './types';
 import {VertexDij} from './VertexDij';
 import {Graph} from './Graph';
 import {Vertex} from './Vertex';
@@ -9,25 +9,29 @@ export class DijkstraGraph implements IDijkstra {
   private dVerteces: IVertexDij[] = [];
   private unvisitedNodes: Set<string> = new Set();
   private rememberedNeightbors: Set<IVertexDij> = new Set();
+  private routeList: {[key: string]: [IVertexDij, number];} = {};
 
   constructor(graph: WeightedGraph) {
     this.graph = graph;
   }
 
-  // findAllShortestPaths(vertex: IVertex): Record<string, IPath> {
   findAllShortestPaths(vertex: IVertex) {
     if (!this.graph.Verteces.includes(vertex)) throw Error('This vertex not found in graph');
 
     const startNode = this.initialize(vertex);
 
     this.doAlgorithm(startNode);
-
-    console.log(this.dVerteces);
   }
 
-  // findShortestPath(vertex1: IVertex, vertex2: IVertex): IPath {
+  findShortestPath(vertex1: IVertex, vertex2: IVertex): IPath {
+    let distance: number = 0;
+    let path: string[] = [vertex2.Key];
 
-  // }
+    const result = this.doShortestPath(vertex1, vertex2, distance, path);
+
+    return {...result, path: result.path.reverse()};
+
+  }
 
   private initialize(startingVertex: IVertex): IVertexDij {
     let startingNode: unknown = null;
@@ -62,8 +66,7 @@ export class DijkstraGraph implements IDijkstra {
   }
 
   private func(startingNode: IVertexDij): IVertexDij[] | undefined {
-    console.log('startingNode', startingNode);
-    console.log('this.unvisitedNodes: ', this.unvisitedNodes);
+
     const currentKey: string = startingNode.Key;
 
     // calculate the tentative distance to each of its unvisited neighbor nodes.
@@ -72,7 +75,6 @@ export class DijkstraGraph implements IDijkstra {
     neightbors.forEach(key => {
       if (!this.unvisitedNodes.has(key)) return;
 
-
       const way = currentKey + '-' + key;
       const weight = this.graph.Weight_List[way];
       const dVertex = this.findDVertex(key);
@@ -80,6 +82,10 @@ export class DijkstraGraph implements IDijkstra {
         // current mark of node ?< mark of this node + way weight
         const sum = startingNode.Mark + weight;
         const newMark = Math.min(dVertex.Mark, sum);
+        if (newMark !== dVertex.Mark) {
+          // записать новую "предыдущую точку маршрута"
+          this.routeList[dVertex.Key] = [startingNode, weight];
+        }
         dVertex.Mark = newMark;
         neightborsV.push(dVertex);
       }
@@ -116,4 +122,25 @@ export class DijkstraGraph implements IDijkstra {
     }
     return 'Done';
   }
+
+  doShortestPath(nodeFrom: IVertex, nodeTo: IVertex, distance: number, path: string[]): IPath {
+
+    if (nodeFrom.Key === nodeTo.Key) return {
+      path,
+      distance
+    };
+
+    const beforeNodeTo = this.routeList[nodeTo.Key];
+
+    if (!beforeNodeTo) return ({
+      path: [],
+      distance: Infinity
+    });
+
+    path.push(beforeNodeTo[0].Key);
+    distance = distance + beforeNodeTo[1];
+
+    return this.doShortestPath(nodeFrom, beforeNodeTo[0], distance, path);
+  }
+
 }
