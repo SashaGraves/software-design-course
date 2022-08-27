@@ -3,7 +3,7 @@ import {WeightedGraph, IVertex, AdjacencyList, VividWeight} from './types';
 export class Graph implements WeightedGraph {
   private adjacencyList: AdjacencyList = {};
 
-  private verteces: IVertex[];
+  private verteces: IVertex[] = [];
   private vividWeightList: VividWeight[] = [];
 
   addVertex(v: IVertex): void {
@@ -36,5 +36,10 @@ export class Graph implements WeightedGraph {
 
   get Adjacency_List() {
     return this.adjacencyList;
+  }
+
+  get Weight_list(): string[] {
+    const readableList = this.Vivid_Weight_List.map(item => (`verteces: ${item.verteces[0].Key}, ${item.verteces[1].Key}, weight: ${item.weight}`));
+    return readableList;
   }
 }

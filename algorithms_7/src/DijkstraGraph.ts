@@ -6,7 +6,7 @@ import {Vertex} from './Vertex';
 export class DijkstraGraph implements IDijkstra {
 
   private graph: WeightedGraph;
-  private dVerteces: VertexDij[];
+  private dVerteces: VertexDij[] = [];
 
   constructor(graph: WeightedGraph) {
     this.graph = graph;
@@ -14,6 +14,7 @@ export class DijkstraGraph implements IDijkstra {
 
   findAllShortestPaths(vertex: IVertex): Record<string, IPath> {
     this.initialize(vertex);
+
 
   }
 

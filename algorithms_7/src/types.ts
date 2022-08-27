@@ -6,6 +6,7 @@ export interface WeightedGraph {
   Adjacency_List: AdjacencyList;
   Verteces: IVertex[];
   Vivid_Weight_List: VividWeight[];
+  Weight_list: string[];
 }
 
 export interface IPath {
