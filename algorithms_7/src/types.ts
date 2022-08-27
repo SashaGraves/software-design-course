@@ -1,8 +1,11 @@
+import {Vertex} from "./Vertex";
+
 export interface WeightedGraph {
-  addVertex(key: string): void;
+  addVertex(vertex: IVertex): void;
   addEdge(from: IVertex, to: IVertex, weight: number): void;
   Adjacency_List: AdjacencyList;
-  Weight_List: WeightList;
+  Verteces: IVertex[];
+  Vivid_Weight_List: VividWeight[];
 }
 
 export interface IPath {
@@ -19,10 +22,6 @@ export type AdjacencyList = {
   [key: string]: string[]; // '1': ['2', '3']
 };
 
-export type WeightList = {
-  [key: string]: number; // '1-2': 4
-};
-
 export interface IVertex {
   Key: string;
 }
@@ -37,3 +36,8 @@ export interface IVertexDij {
   Mark: number;
   Vertex: IVertex;
 }
+
+export type VividWeight = {
+  verteces: [IVertex, IVertex];
+  weight: number;
+};

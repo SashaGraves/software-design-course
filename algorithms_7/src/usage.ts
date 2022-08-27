@@ -2,7 +2,7 @@ import {Vertex} from "./Vertex";
 import {Edge} from "./Edge";
 import {WeightedGraph, IDijkstra} from './types';
 import {Graph} from "./Graph";
-import {Dijkstra} from "./Dijkstra";
+import {DijkstraGraph} from "./DijkstraGraph";
 
 const vertices = [
   new Vertex('1'),
@@ -20,15 +20,15 @@ const edges = [
 ];
 const graph: WeightedGraph = new Graph();
 
-vertices.forEach(verticle => graph.addVertex(verticle.Key));
+vertices.forEach(vertex => graph.addVertex(vertex));
 edges.forEach(edge => graph.addEdge(edge.From, edge.To, edge.Weight));
 
 console.log(graph.Adjacency_List);
-console.log(graph.Weight_List);
+console.log(graph.Vivid_Weight_List);
 
-const dijkstra: IDijkstra = new Dijkstra(graph);
+const dijkstraGraph: IDijkstra = new DijkstraGraph(graph);
 
-dijkstra.findAllShortestPaths(vertices[3]);
+dijkstraGraph.findAllShortestPaths(vertices[3]);
 /*
 {
   '1': { path: ['4', '1'], distance: 3 },
@@ -38,6 +38,6 @@ dijkstra.findAllShortestPaths(vertices[3]);
 }
 */
 
-dijkstra.findShortestPath(vertices[3], vertices[2]); // { path: ['4', '1', '3'], distance: 7 }
-dijkstra.findShortestPath(vertices[0], vertices[4]); // { path: [], distance: Infinity }
-dijkstra.findShortestPath(vertices[0], vertices[0]); // { path: ['1'], distance: 0 }
+dijkstraGraph.findShortestPath(vertices[3], vertices[2]); // { path: ['4', '1', '3'], distance: 7 }
+dijkstraGraph.findShortestPath(vertices[0], vertices[4]); // { path: [], distance: Infinity }
+dijkstraGraph.findShortestPath(vertices[0], vertices[0]); // { path: ['1'], distance: 0 }
