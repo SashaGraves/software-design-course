@@ -14,22 +14,20 @@ export class DijkstraGraph implements IDijkstra {
     this.graph = graph;
   }
 
-  findAllShortestPaths(vertex: IVertex): Record<string, IPath> {
+  // findAllShortestPaths(vertex: IVertex): Record<string, IPath> {
+  findAllShortestPaths(vertex: IVertex) {
     if (!this.graph.Verteces.includes(vertex)) throw Error('This vertex not found in graph');
 
     const startNode = this.initialize(vertex);
 
-    console.log('unvisitedNodes before start', this.unvisitedNodes);
-
     this.doAlgorithm(startNode);
 
-    console.log('unvisitedNodes after', this.unvisitedNodes);
-
+    console.log(this.dVerteces);
   }
 
-  findShortestPath(vertex1: IVertex, vertex2: IVertex): IPath {
+  // findShortestPath(vertex1: IVertex, vertex2: IVertex): IPath {
 
-  }
+  // }
 
   private initialize(startingVertex: IVertex): IVertexDij {
     let startingNode: unknown = null;
@@ -64,6 +62,8 @@ export class DijkstraGraph implements IDijkstra {
   }
 
   private func(startingNode: IVertexDij): IVertexDij[] | undefined {
+    console.log('startingNode', startingNode);
+    console.log('this.unvisitedNodes: ', this.unvisitedNodes);
     const currentKey: string = startingNode.Key;
 
     // calculate the tentative distance to each of its unvisited neighbor nodes.
@@ -71,6 +71,7 @@ export class DijkstraGraph implements IDijkstra {
     const neightborsV: IVertexDij[] = [];
     neightbors.forEach(key => {
       if (!this.unvisitedNodes.has(key)) return;
+
 
       const way = currentKey + '-' + key;
       const weight = this.graph.Weight_List[way];
