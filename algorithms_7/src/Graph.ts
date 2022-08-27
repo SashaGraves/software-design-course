@@ -1,7 +1,8 @@
-import {WeightedGraph, IVertex, AdjacencyList, VividWeight} from './types';
+import {WeightedGraph, IVertex, AdjacencyList, VividWeight, WeightList} from './types';
 
 export class Graph implements WeightedGraph {
   private adjacencyList: AdjacencyList = {};
+  private weightList: WeightList = {};
 
   private verteces: IVertex[] = [];
   private vividWeightList: VividWeight[] = [];
@@ -9,6 +10,7 @@ export class Graph implements WeightedGraph {
   addVertex(v: IVertex): void {
     // добавляет вершину в список вершин 
     if (this.Verteces.includes(v)) return;
+    this.adjacencyList[v.Key] = [];
     this.adjacencyList[v.Key] = [];
     this.verteces.push(v);
   };
@@ -22,6 +24,9 @@ export class Graph implements WeightedGraph {
     this.adjacencyList[from.Key].push(to.Key);
 
     // и добавляяет весы для каждой грани
+    const weightKey = from.Key + '-' + to.Key;
+    this.weightList[weightKey] = weight;
+
     const vivdWeight = {verteces: [from, to] as [IVertex, IVertex], weight};
     this.vividWeightList.push(vivdWeight);
   };
@@ -38,8 +43,7 @@ export class Graph implements WeightedGraph {
     return this.adjacencyList;
   }
 
-  get Weight_list(): string[] {
-    const readableList = this.Vivid_Weight_List.map(item => (`verteces: ${item.verteces[0].Key}, ${item.verteces[1].Key}, weight: ${item.weight}`));
-    return readableList;
+  get Weight_List() {
+    return this.weightList;
   }
 }

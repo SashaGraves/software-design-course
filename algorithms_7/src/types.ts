@@ -6,7 +6,7 @@ export interface WeightedGraph {
   Adjacency_List: AdjacencyList;
   Verteces: IVertex[];
   Vivid_Weight_List: VividWeight[];
-  Weight_list: string[];
+  Weight_List: WeightList;
 }
 
 export interface IPath {
@@ -33,12 +33,20 @@ export interface IEdge {
   From: IVertex;
 }
 
-export interface IVertexDij {
+export interface IVertexDij extends IVertex {
   Mark: number;
-  Vertex: IVertex;
 }
 
 export type VividWeight = {
   verteces: [IVertex, IVertex];
   weight: number;
+};
+
+export type VividAdjacency = {
+  vertex: IVertex;
+  connections: IVertex[];
+};
+
+export type WeightList = {
+  [key: string]: number; // '1-2': 4
 };

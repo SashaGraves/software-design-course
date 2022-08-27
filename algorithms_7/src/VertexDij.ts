@@ -1,16 +1,15 @@
-import {IVertex, IVertexDij} from "./types";
+import {IVertexDij} from "./types";
 import {Vertex} from './Vertex';
 
-export class VertexDij implements IVertexDij {
+export class VertexDij extends Vertex implements IVertexDij {
   private mark: number;
-  private vertex: IVertex;
 
-  constructor(vertex: IVertex, isStarting: boolean = false) {
-    this.vertex = vertex;
+  constructor(key: string, isStarting: boolean = false) {
+    super(key);
     if (isStarting) {
       this.mark = 0;
     } else {
-      this.mark = Infinity;
+      this.mark = Number.MAX_SAFE_INTEGER;;
     }
   }
 
@@ -20,10 +19,6 @@ export class VertexDij implements IVertexDij {
 
   set Mark(value: number) {
     this.mark = value;
-  }
-
-  get Vertex(): IVertex {
-    return this.vertex;
   }
 
 }
