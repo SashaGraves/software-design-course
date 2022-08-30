@@ -1,7 +1,7 @@
 import {IDijkstra, IVertex, IPath, IVertexDij, WeightedGraph, WeightList} from './types';
 import {VertexDij} from './VertexDij';
 import {Graph} from './Graph';
-import {Vertex} from './Vertex';
+import {Vertex} from '../Vertex';
 
 export class DijkstraGraph implements IDijkstra {
 
