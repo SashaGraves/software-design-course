@@ -2,11 +2,9 @@ import {Element} from './Element';
 
 export class PriorityQueue {
   heap: Element[];
-  sortedArray: Element[];
 
   constructor() {
     this.heap = [];
-    this.sortedArray = [];
   }
 
   enqueueAll(data: Element[]) {
@@ -19,28 +17,21 @@ export class PriorityQueue {
     this.placeElement(el);
   }
 
-  dequeue() {
+  doAllJobs() {
     if (this.heap.length === 0) return null;
 
     for (let i = 0; i < this.heap.length; i++) {
-      this.sortedArray.push(this.delete());
+      console.log(this.delete());
     }
-
-    return this.sortedArray.shift() || null;
   }
 
   doJob() {
-    const el = this.dequeue();
+if (this.heap.length === 0) return null;
+
+    const el = this.delete();
     if (el) {
 
       console.log(el.Priority);
-    }
-  }
-
-  doAllJobs() {
-    this.doJob();
-    while (this.sortedArray.length) {
-      this.doJob();
     }
   }
 
